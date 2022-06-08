@@ -1,7 +1,9 @@
 cd alltkc
 wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
-kclist=$(ls | grep kubeconfig | head -n 2)
-sshkeylist=$(ls | grep ssh | head -n 2)
+# kclist=$(ls | grep kubeconfig | head -n 2)
+# sshkeylist=$(ls | grep ssh | head -n 2)
+kclist=("tkg216-antrea-35ns5-c5-kubeconfig")
+sshkeylist=("tkg216-antrea-35ns5-c5-ssh")
 for i in $kclist
 do
 echo $i
@@ -30,8 +32,8 @@ echo $workerip
 cpresult=${kc/kubeconfig/"cp.text"}
 workerresult=${kc/kubeconfig/"worker.text"}
 # run script on pod for cp node
-echo "kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > alltkc/$cpresult"
-kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > alltkc/$cpresult
+echo "kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult"
+kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult
 sleep 10
 done
 
