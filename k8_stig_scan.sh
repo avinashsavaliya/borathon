@@ -30,8 +30,8 @@ op=($ips) || true
 cpip=${op[0]} || true
 workerip=${op[1]} || true
 #reemove first and last double quotes
-$cpip | tr -d '"'
-$workerip | tr -d '"'
+cpip=`sed -e 's/^"//' -e 's/"$//' <<<"$cpip"`
+workerip=`sed -e 's/^"//' -e 's/"$//' <<<"$workerip"`
 echo $cpip
 echo $workerip
 cpresult=${kc/kubeconfig/"cp.text"}
