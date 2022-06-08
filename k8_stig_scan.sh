@@ -1,5 +1,5 @@
 cd alltkc
-wget https://github.com/avinashsavaliya/borathon/blob/main/k8-stig.yaml -O k8-stig.yaml
+wget https://github.com/avinashsavaliya/borathon/blob/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
 kclist=$(ls | grep kubeconfig | head -n 2)
 sshkeylist=$(ls | grep ssh | head -n 2)
 for i in $kclist
@@ -30,6 +30,6 @@ echo $workerip
 cpresult=${kc/kubeconfig/"cp.text"}
 workerresult=${kc/kubeconfig/"worker.text"}
 # run script on pod for cp node
-kubectl --kubeconfig $i exec $podname -i -t  -- /share/test.sh $cpip $sshfile > alltkc/$cpresult
+kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > alltkc/$cpresult
 done
 sleep 30
