@@ -1,9 +1,7 @@
 cd alltkc
 wget https://github.com/avinashsavaliya/borathon/blob/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
-# kclist=$(ls | grep kubeconfig | head -n 2)
-# sshkeylist=$(ls | grep ssh | head -n 2)
-sshkeylist=("tkg216-antrea-35ns5-c5-ssh")
-kclist=("tkg216-antrea-35ns5-c5-kubeconfig")
+kclist=$(ls | grep kubeconfig | head -n 2)
+sshkeylist=$(ls | grep ssh | head -n 2)
 for i in $kclist
 do
 echo $i
