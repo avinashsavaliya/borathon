@@ -34,7 +34,7 @@ cpresult=${kc/kubeconfig/"cp.text"}
 workerresult=${kc/kubeconfig/"worker.text"}
 # run script on pod for cp node
 echo "kubectl --kubeconfig $i exec $podname -n k8-stig -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult"
-kubectl --kubeconfig $i exec $podname -n k8-stig -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult
+kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner.sh $cpip $sshfile > $cpresult
 sleep 10
 done
 
