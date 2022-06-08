@@ -13,16 +13,23 @@ sleep 30
 for i in $kclist
 do
 kc=$i
-ssh="ssh"
-sshfile=${kc/kubeconfig/"$ssh"}
+sshfile=${kc/kubeconfig/"ssh"}
 #retrieve pod name
 a=$(kubectl --kubeconfig $i -n k8-stig get pods -o=custom-columns="DATA:.metadata.name" || true)
 b=($a) || true
 podname=${b[1]} || true
 # copy ssh file from host to pod
-kubectl --kubeconfig $i cp $sshfile $podname:/share/
-# run script on pod
-kubectl --kubeconfig $i exec $podname -i -t  -- /share/test.sh 10.244.12.242 $sshfile > alltkc/check.text
-
+kubectl --kubeconfig $i cp $sshfile $podname:/share/ || true
+#retrive controlplane and worker node ip
+ips=$(kubectl --kubeconfig $i get nodes -o json | jq '.items[].status.addresses[] | select(.type=="InternalIP") | .address'|| true)
+op=($ips) || true
+cpip=${op[0]} || true
+workerip=${op[1]} || true
+echo $cpip
+echo $workerip
+cpresult=${kc/kubeconfig/"cp.text"}
+workerresult=${kc/kubeconfig/"worker.text"}
+# run script on pod for cp node
+kubectl --kubeconfig $i exec $podname -i -t  -- /share/test.sh $cpip $sshfile > alltkc/$cpresult
 done
 sleep 30
