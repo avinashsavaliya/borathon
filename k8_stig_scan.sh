@@ -1,3 +1,4 @@
+#!/bin/bash
 cd alltkc
 wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
 # kclist=$(ls | grep kubeconfig | head -n 2)
