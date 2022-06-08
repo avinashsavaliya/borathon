@@ -21,7 +21,8 @@ a=$(kubectl --kubeconfig $i -n k8-stig get pods -o=custom-columns="DATA:.metadat
 b=($a) || true
 podname=${b[1]} || true
 # copy ssh file from host to pod
-kubectl --kubeconfig $i cp $sshfile $podname:/share/ || true
+echo "kubectl --kubeconfig $i -n k8-stig cp $sshfile $podname:/share/ || true"
+kubectl --kubeconfig $i -n k8-stig cp $sshfile $podname:/share/ || true
 #retrieve controlplane and worker node ip
 ips=$(kubectl --kubeconfig $i get nodes -o json | jq '.items[].status.addresses[] | select(.type=="InternalIP") | .address'|| true)
 op=($ips) || true
@@ -32,8 +33,8 @@ echo $workerip
 cpresult=${kc/kubeconfig/"cp.text"}
 workerresult=${kc/kubeconfig/"worker.text"}
 # run script on pod for cp node
-echo "kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult"
-kubectl --kubeconfig $i exec $podname -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult
+echo "kubectl --kubeconfig $i exec $podname -n k8-stig -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult"
+kubectl --kubeconfig $i exec $podname -n k8-stig -i -t  -- /share/stig_scanner.sh $cpip $sshfile > $cpresult
 sleep 10
 done
 
