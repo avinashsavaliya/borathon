@@ -34,8 +34,8 @@ spec:
         name: stig
         command: [ "/bin/bash", "-c", "--" ]
         args:
-          - wget https://github.com/avinashsavaliya/borathon/blob/main/stig_pod.sh;
-            chmod 777 /share/stig_pod.sh;
+          - wget https://github.com/avinashsavaliya/borathon/blob/main/stig_scanner.sh;
+            chmod 777 /share/stig_scanner.sh;
             while true; do sleep 30; done
         volumeMounts:
         - mountPath: /share
