@@ -28,6 +28,9 @@ ips=$(kubectl --kubeconfig $i get nodes -o json | jq '.items[].status.addresses[
 op=($ips) || true
 cpip=${op[0]} || true
 workerip=${op[1]} || true
+//reemove first and last double quotes
+"$cpip" | tr -d '"'
+"$workerip" | tr -d '"'
 echo $cpip
 echo $workerip
 cpresult=${kc/kubeconfig/"cp.text"}
