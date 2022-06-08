@@ -1,5 +1,5 @@
 cd alltkc
-wget https://github.com/avinashsavaliya/borathon/blob/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
+wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
 kclist=$(ls | grep kubeconfig | head -n 2)
 sshkeylist=$(ls | grep ssh | head -n 2)
 for i in $kclist
