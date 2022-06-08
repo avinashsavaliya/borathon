@@ -1,5 +1,5 @@
 cd alltkc
-wget https://raw.githubusercontent.com/yogeshbendre/specialtools/master/k8_stig.yaml -O k8-stig.yaml
+wget https://raw.githubusercontent.com/yogeshbendre/specialtools/master/k8-stig.yaml -O k8-stig.yaml
 kclist=$(ls | grep kubeconfig | head -n 5)
 
 for i in $kclist
