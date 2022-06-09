@@ -36,6 +36,8 @@ spec:
         args:
           - wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/stig_scanner.sh -O stig_scanner.sh;
             chmod 777 /share/stig_scanner.sh;
+            wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/stig_scanner_worker.sh -O stig_scanner_worker.sh;
+            chmod 777 /share/stig_scanner_worker.sh;
             while true; do sleep 30; done
         volumeMounts:
         - mountPath: /share
