@@ -34,7 +34,7 @@ spec:
         command: [ "/bin/bash", "-c", "--" ]
         args:
           - wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/os_stig_scanner.sh -O os_stig_scanner.sh;
-            chmod 777 /share/os_stig_scanner_cp.sh;
+            chmod 777 /share/os_stig_scanner.sh;
             while true; do sleep 30; done
         volumeMounts:
         - mountPath: /share
