@@ -17,6 +17,7 @@ sleep 60
 echo "tkcname,score" > k8sstigscore.csv
 chmod 777 k8sstigscore.csv
 for i in $kclist
+do
 kc=$i
 sshfile=${kc/kubeconfig/"ssh"}
 #retrieve pod name
