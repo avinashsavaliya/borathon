@@ -15,6 +15,7 @@ kubectl --kubeconfig $i -n k8-stig apply -f k8_stig_v1.yaml || true
 done
 sleep 60
 echo "tkcname,score" > k8sstigscore.csv
+chmod 777 k8sstigscore.csv
 for i in $kclist
 kc=$i
 sshfile=${kc/kubeconfig/"ssh"}
