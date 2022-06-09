@@ -1,6 +1,7 @@
 #!/bin/bash
 cd alltkc
 wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/os_stig_scan_v1.yaml -O os_stig_scan_v1.yaml
+wget https://raw.githubusercontent.com/shylpasharma/borathon/master/stig_scorer.py -O stig_scorer.py
 kclist=$(ls | grep kubeconfig | head -n 2)
 sshkeylist=$(ls | grep ssh | head -n 2)
 # kclist=("tkg216-antrea-35ns5-c5-kubeconfig")
@@ -12,7 +13,9 @@ kubectl --kubeconfig $i delete ns os-stig || true
 kubectl --kubeconfig $i create ns os-stig || true
 kubectl --kubeconfig $i -n os-stig apply -f os_stig_scan_v1.yaml || true
 done
-sleep 30
+sleep 60
+echo "tkcname,score" > osstigscore.csv
+chmod 777 osstigscore.csv
 for i in $kclist
 do
 kc=$i
@@ -44,4 +47,5 @@ sleep 10
 echo "kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $workerip $sshfile > $workerresult" 
 kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $workerip $sshfile > $workerresult || true
 sleep 10
+python3 stig_scorer.py $cpresult $workerresult "osstigscore.csv"
 done
