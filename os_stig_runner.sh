@@ -34,8 +34,8 @@ cpip=`sed -e 's/^"//' -e 's/"$//' <<<"$cpip"`
 workerip=`sed -e 's/^"//' -e 's/"$//' <<<"$workerip"`
 echo $cpip
 echo $workerip
-cpresult=${kc/kubeconfig/"os-cp.text"}
-workerresult=${kc/kubeconfig/"os-worker.text"}
+cpresult=${kc/kubeconfig/"cp-os.text"}
+workerresult=${kc/kubeconfig/"worker-os.text"}
 # run script on pod for cp node scan
 echo "kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $cpip $sshfile > $cpresult"
 kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $cpip $sshfile > $cpresult || true
