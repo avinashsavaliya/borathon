@@ -1,6 +1,7 @@
 #!/bin/bash
 cd alltkc
 wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/k8_stig_v1.yaml -O k8_stig_v1.yaml
+wget https://raw.githubusercontent.com/shylpasharma/borathon/master/stig_scorer.py -O stig_scorer.py
 kclist=$(ls | grep kubeconfig | head -n 2)
 sshkeylist=$(ls | grep ssh | head -n 2)
 # kclist=("tkg216-antrea-35ns5-c5-kubeconfig")
@@ -44,5 +45,6 @@ sleep 10
 echo "kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner.sh $workerip $sshfile > $workerresult" 
 kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner_worker.sh $workerip $sshfile > $workerresult || true
 sleep 10
+python3 stig_scorer.py $cpresult $workerresult "k8sstigscore.csv"
 done
 
