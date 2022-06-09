@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8-stig
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      run: my-nginx-curl
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: my-nginx-curl
+    spec:
+      initContainers:
+        - name: stig-init
+          image: harbor-repo.vmware.com/st_tkg_thunder/ysb-ysbinspec:v1
+          command: ["/bin/sh","-c"]
+          args: ["git clone https://install-esxi-token:j_xxoGAaQZykcnsezFo7@gitlab.eng.vmware.com/tanzu-compliance/kubernetes-stig-baseline.git", "/share"]
+          volumeMounts:
+          - mountPath: "/share"
+            name: share
+      containers:
+      - image: harbor-repo.vmware.com/st_tkg_thunder/ysb-ysbinspec:v1
+        imagePullPolicy: IfNotPresent
+        name: stig
+        command: [ "/bin/bash", "-c", "--" ]
+        args:
+          - wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/stig_scanner.sh -O stig_scanner.sh;
+            chmod 777 /share/stig_scanner.sh;
+            wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/stig_scanner_worker.sh -O stig_scanner_worker.sh;
+            chmod 777 /share/stig_scanner_worker.sh;
+            while true; do sleep 30; done
+        volumeMounts:
+        - mountPath: /share
+          name: share
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      volumes:
+        -
+          emptyDir: {}
+          name: share
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
