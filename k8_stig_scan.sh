@@ -36,9 +36,12 @@ echo $cpip
 echo $workerip
 cpresult=${kc/kubeconfig/"cp.text"}
 workerresult=${kc/kubeconfig/"worker.text"}
-# run script on pod for cp node
+# run script on pod for cp node scan
 echo "kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner.sh $cpip $sshfile > $cpresult"
 kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner.sh $cpip $sshfile > $cpresult
 sleep 10
+# run script on pod for worker node scan
+echo "kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner.sh $workerip $sshfile > $workerresult"
+kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner_worker.sh $workerip $sshfile > $workerresult
 done
 
