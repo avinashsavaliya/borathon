@@ -12,7 +12,7 @@ kubectl --kubeconfig $i delete ns k8-stig || true
 kubectl --kubeconfig $i create ns k8-stig || true
 kubectl --kubeconfig $i -n k8-stig apply -f k8_stig_v1.yaml || true
 done
-sleep 30
+sleep 60
 for i in $kclist
 do
 kc=$i
