@@ -2,8 +2,8 @@
 cd alltkc
 wget https://raw.githubusercontent.com/avinashsavaliya/borathon/main/os_stig_scan_v1.yaml -O os_stig_scan_v1.yaml
 wget https://raw.githubusercontent.com/shylpasharma/borathon/master/stig_scorer.py -O stig_scorer.py
-kclist=$(ls | grep kubeconfig | head -n 2)
-sshkeylist=$(ls | grep ssh | head -n 2)
+kclist=$(ls | grep kubeconfig)
+sshkeylist=$(ls | grep ssh)
 # kclist=("tkg216-antrea-35ns5-c5-kubeconfig")
 # sshkeylist=("tkg216-antrea-35ns5-c5-ssh")
 for i in $kclist
