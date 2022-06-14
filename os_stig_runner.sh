@@ -39,13 +39,21 @@ echo $cpip
 echo $workerip
 cpresult=${kc/kubeconfig/"cp-os.text"}
 workerresult=${kc/kubeconfig/"worker-os.text"}
+cp_report=${kc/kubeconfig/"control-node-os-stig.json"}
+worker_report=${kc/kubeconfig/"worker-node-os-stig.json"}
 # run script on pod for cp node scan
-echo "kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $cpip $sshfile > $cpresult"
-kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $cpip $sshfile > $cpresult || true
+echo "kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $cpip $sshfile $cp_report > $cpresult"
+kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $cpip $sshfile $cp_report > $cpresult || true
 sleep 10
 # run script on pod for worker node scan
-echo "kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $workerip $sshfile > $workerresult" 
-kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $workerip $sshfile > $workerresult || true
+echo "kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $workerip $sshfile $worker_report > $workerresult" 
+kubectl --kubeconfig $i exec $podname -n os-stig -i -- /share/os_stig_scanner.sh $workerip $sshfile $worker_report > $workerresult || true
 sleep 10
+# copy control node report file from pod to host
+echo "kubectl --kubeconfig $i -n os-stig cp $podname:/share/$cp_report $worker_report|| true"
+kubectl --kubeconfig $i -n os-stig cp $podname:/share/$cp_report $cp_report  || true
+# copy worker node report file from pod to host
+echo "kubectl --kubeconfig $i -n os-stig cp $podname:/share/$worker_report $worker_report || true"
+kubectl --kubeconfig $i -n os-stig cp $podname:/share/$worker_report $worker_report  || true
 python3 stig_scorer.py $cpresult $workerresult "osstigscore.csv"
 done
