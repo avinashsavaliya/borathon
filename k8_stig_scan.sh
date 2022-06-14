@@ -50,11 +50,11 @@ echo "kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner
 kubectl --kubeconfig $i exec $podname -n k8-stig -i -- /share/stig_scanner_worker.sh $workerip $sshfile $worker_report > $workerresult || true
 sleep 10
 # copy control node report file from pod to host
-echo "kubectl --kubeconfig $i -n k8-stig cp $sshfile $podname:/share/$cp_report || true"
-kubectl --kubeconfig $i -n k8-stig cp $podname:/share/$cp_report /root/alltkc || true
+echo "kubectl --kubeconfig $i -n k8-stig cp $podname:/share/$cp_report /root/alltkc/ || true"
+kubectl --kubeconfig $i -n k8-stig cp $podname:/share/$cp_report /root/alltkc/ || true
 # copy worker node report file from pod to host
-echo "kubectl --kubeconfig $i -n k8-stig cp $sshfile $podname:/share/$worker_report || true"
-kubectl --kubeconfig $i -n k8-stig cp $podname:/share/$worker_report /root/alltkc || true
+echo "kubectl --kubeconfig $i -n k8-stig cp $podname:/share/$worker_report /root/alltkc/ || true"
+kubectl --kubeconfig $i -n k8-stig cp $podname:/share/$worker_report /root/alltkc/ || true
 python3 stig_scorer.py $cpresult $workerresult "k8sstigscore.csv"
 done
 
